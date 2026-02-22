@@ -1,0 +1,13 @@
+{
+  "name": "cmux-notify",
+  "description": "Send cmux notifications when Copilot CLI sessions end.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "keywords": [
+    "copilot-cli",
+    "hooks",
+    "cmux",
+    "notification"
+  ],
+  "hooks": "hooks.json"
+}

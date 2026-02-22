@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/installed-plugins/_direct/cmux-notify/scripts/cmux-notify.sh",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ],
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/installed-plugins/_direct/cmux-notify/scripts/cmux-notify.sh",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}
