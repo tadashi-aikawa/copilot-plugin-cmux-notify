@@ -51,6 +51,27 @@ if [ -n "$QUESTION" ]; then
   )"
 fi
 
+SUMMARY="$(
+  echo "$INPUT" | jq -r '
+    .toolArgs as $toolArgs
+    | if ($toolArgs | type) == "object" then
+        ($toolArgs.summary // "")
+      elif ($toolArgs | type) == "string" then
+        (try (($toolArgs | fromjson).summary // "") catch "")
+      else
+        ""
+      end
+  '
+)"
+
+if [ -n "$SUMMARY" ]; then
+  SUMMARY="$(
+    printf '%s' "$SUMMARY" |
+      tr '\r\n' '  ' |
+      sed -E 's/[[:space:]]+/ /g; s/^ //; s/ $//'
+  )"
+fi
+
 INPUT_TOOL_REQUESTS_COUNT="$(
   echo "$INPUT" | jq -r '
     (.data.toolRequests // [])
@@ -83,6 +104,8 @@ fi
 
 if [[ "$TOOL_NAME" = "ask_user" ]]; then
   BODY="$QUESTION"
+elif [[ "$TOOL_NAME" = "exit_plan_mode" ]]; then
+  BODY="$SUMMARY"
 elif [[ "$TOOL_NAME" = "bash" ]]; then
   BODY="Copilot requests tool execution: ${TOOL_NAME}"
 elif [[ "$TOOL_NAME" = "report_intent" ]]; then
