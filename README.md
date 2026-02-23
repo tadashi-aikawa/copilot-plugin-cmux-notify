@@ -27,6 +27,7 @@ copilot plugin install tadashi-aikawa/copilot-plugin-notify
 
 - Hook payload is read from stdin (JSON).
 - `preToolUse`: notify only for selected tool names (default: `bash`).
+- `ask_user`: notify with `toolArgs.question` (newlines are normalized to spaces).
 - `agentStop`: notify when Copilot finishes an agent turn and waits for user input.
 
 ## Environment variables
@@ -39,5 +40,4 @@ copilot plugin install tadashi-aikawa/copilot-plugin-notify
 | `COPILOT_NOTIFY_AGENTSTOP_POLL_ATTEMPTS`     | number of retries when waiting for the latest `assistant.message` after `agentStop`       | `10`         |
 | `COPILOT_NOTIFY_AGENTSTOP_POLL_INTERVAL_SEC` | interval seconds between retries                                                          | `0.05`       |
 | `COPILOT_NOTIFY_AGENTSTOP_ACCEPTABLE_AGE_MS` | maximum age from hook input timestamp for candidate messages to avoid stale notifications | `3000`       |
-
 

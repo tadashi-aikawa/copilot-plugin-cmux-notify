@@ -30,6 +30,27 @@ TOOL_NAME="$(
   '
 )"
 
+QUESTION="$(
+  echo "$INPUT" | jq -r '
+    .toolArgs as $toolArgs
+    | if ($toolArgs | type) == "object" then
+        ($toolArgs.question // "")
+      elif ($toolArgs | type) == "string" then
+        (try (($toolArgs | fromjson).question // "") catch "")
+      else
+        ""
+      end
+  '
+)"
+
+if [ -n "$QUESTION" ]; then
+  QUESTION="$(
+    printf '%s' "$QUESTION" |
+      tr '\r\n' '  ' |
+      sed -E 's/[[:space:]]+/ /g; s/^ //; s/ $//'
+  )"
+fi
+
 INPUT_TOOL_REQUESTS_COUNT="$(
   echo "$INPUT" | jq -r '
     (.data.toolRequests // [])
@@ -60,7 +81,9 @@ if [ "$DEBUG_MODE" = "1" ]; then
   printf 'TOOL_NAME: %s\n' "$TOOL_NAME" >>"$DEBUG_PATH"
 fi
 
-if [[ "$TOOL_NAME" = "bash" ]]; then
+if [[ "$TOOL_NAME" = "ask_user" ]]; then
+  BODY="$QUESTION"
+elif [[ "$TOOL_NAME" = "bash" ]]; then
   BODY="Copilot requests tool execution: ${TOOL_NAME}"
 elif [[ "$TOOL_NAME" = "report_intent" ]]; then
   # DO NOTHING
