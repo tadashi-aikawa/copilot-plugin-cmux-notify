@@ -114,7 +114,11 @@ notify() {
   if [ "$DEBUG_MODE" = "1" ]; then
     printf 'title: %s | body: %s' "$title" "$body" >>"$DEBUG_PATH"
   fi
-  printf '\e]777;notify;%s;%s\a' "$title" "$body" >/dev/tty
+  if [ "${COPILOT_NOTIFY_FORCE_STDOUT:-0}" = "1" ]; then
+    printf '\e]777;notify;%s;%s\a' "$title" "$body"
+  else
+    printf '\e]777;notify;%s;%s\a' "$title" "$body" >/dev/tty
+  fi
 }
 
 if [[ ! -z "$BODY" ]]; then
