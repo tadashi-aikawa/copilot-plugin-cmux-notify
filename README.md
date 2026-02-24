@@ -20,6 +20,12 @@ Tested on macOS only.
 copilot plugin install tadashi-aikawa/copilot-plugin-notify
 ```
 
+## Test
+
+```bash
+bash tests/notify_test.sh
+```
+
 ## Environment variables
 
 
