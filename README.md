@@ -17,7 +17,9 @@ Tested on macOS only.
 ## Install
 
 ```bash
-copilot plugin install tadashi-aikawa/copilot-plugin-notify
+git clone https://github.com/tadashi-aikawa/copilot-plugin-notify.git
+cd <parent directory of copilot-plugin-notify>
+copilot plugin install ./copilot-plugin-notify
 ```
 
 ## Test
