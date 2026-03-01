@@ -64,6 +64,8 @@ export COPILOT_NOTIFY_ALLOW_PATHS="/Users/tadashi-aikawa/tmp/ai-sandbox,/tmp/saf
 ### Notes
 
 - Hook payload is read from stdin (JSON).
+- `ask_user` / `exit_plan_mode` / `task_complete`:
+  - notify regardless of `toolArgs.path` with normalized `question` / `summary`.
 - `preToolUse`:
   - if `toolArgs.path` exists: check `cwd` first.
     - if path is under `cwd`: do not notify.
@@ -74,8 +76,6 @@ export COPILOT_NOTIFY_ALLOW_PATHS="/Users/tadashi-aikawa/tmp/ai-sandbox,/tmp/saf
     - if not matched (or env is empty): notify with `<toolName>: <toolArgs.path>`.
     - this is an independent plugin-side allowlist and does not replace Copilot CLI directory permissions.
   - `bash`: notify with `bash`, but only when the command should be notified by tool rules.
-- `ask_user`: notify with `toolArgs.question` (newlines are normalized to spaces).
-- `exit_plan_mode`: notify with `toolArgs.summary` (newlines are normalized to spaces).
 - `agentStop`: notify when Copilot finishes an agent turn and waits for user input.
 - `bash` rule matching:
   - `deny` has highest priority, then `allow`, then notify by default.

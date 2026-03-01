@@ -167,6 +167,11 @@ main() {
     '{"toolName":"exit_plan_mode","toolArgs":{"summary":"done\nnext"}}' \
     "done next"
 
+  assert_notify \
+    "task_complete: 改行は空白に正規化される" \
+    '{"toolName":"task_complete","toolArgs":{"summary":"done\nnext"}}' \
+    "done next"
+
   local transcript_path
   transcript_path="$(mktemp)"
   TMP_FILES+=("$transcript_path")
@@ -200,6 +205,21 @@ EOF
     '{"toolName":"bash","cwd":"/tmp/work","toolArgs":{"path":"/tmp/outside.txt","command":"git status"}}' \
     "bash: /tmp/outside.txt" \
     "COPILOT_NOTIFY_ALLOW_TOOL_RULES=shell(git:*)"
+
+  assert_notify \
+    "ask_user: toolArgs.pathがあってもquestionを通知する" \
+    '{"toolName":"ask_user","cwd":"/tmp/work","toolArgs":{"question":"need approval","path":"a.txt"}}' \
+    "need approval"
+
+  assert_notify \
+    "exit_plan_mode: toolArgs.pathがあってもsummaryを通知する" \
+    '{"toolName":"exit_plan_mode","cwd":"/tmp/work","toolArgs":{"summary":"plan done","path":"a.txt"}}' \
+    "plan done"
+
+  assert_notify \
+    "task_complete: toolArgs.pathがあってもsummaryを通知する" \
+    '{"toolName":"task_complete","cwd":"/tmp/work","toolArgs":{"summary":"task done","path":"a.txt"}}' \
+    "task done"
 
   printf '\nSummary: PASS=%d FAIL=%d\n' "$PASS_COUNT" "$FAIL_COUNT"
   if [ "$FAIL_COUNT" -gt 0 ]; then

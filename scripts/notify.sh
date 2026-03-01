@@ -405,7 +405,11 @@ if [ "$DEBUG_MODE" = "1" ]; then
   printf 'TOOL_PATH: %s\n' "$TOOL_PATH" >>"$DEBUG_PATH"
 fi
 
-if [ -n "$TOOL_PATH" ]; then
+if [[ "$TOOL_NAME" = "ask_user" ]]; then
+  BODY="$QUESTION"
+elif [[ "$TOOL_NAME" = "exit_plan_mode" || "$TOOL_NAME" = "task_complete" ]]; then
+  BODY="$SUMMARY"
+elif [ -n "$TOOL_PATH" ]; then
   if [ -n "$CWD_PATH" ] && path_is_under_prefix "$TOOL_PATH" "$CWD_PATH"; then
     BODY=""
   elif path_in_allow_paths "$TOOL_PATH" "$ALLOW_PATHS"; then
@@ -415,10 +419,6 @@ if [ -n "$TOOL_PATH" ]; then
   else
     BODY="path: ${TOOL_PATH}"
   fi
-elif [[ "$TOOL_NAME" = "ask_user" ]]; then
-  BODY="$QUESTION"
-elif [[ "$TOOL_NAME" = "exit_plan_mode" ]]; then
-  BODY="$SUMMARY"
 elif [[ "$TOOL_NAME" = "bash" ]]; then
   if [ -z "$TOOL_COMMAND" ]; then
     BODY="${TOOL_NAME}"
