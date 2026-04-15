@@ -1,6 +1,14 @@
 {
   "version": 1,
   "hooks": {
+    "notification": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/installed-plugins/_direct/copilot-plugin-notify/scripts/notify.sh",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ],
     "preToolUse": [
       {
         "type": "command",
